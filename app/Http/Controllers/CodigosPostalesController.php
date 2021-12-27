@@ -8,8 +8,7 @@ use Illuminate\Support\Arr;
 
 //recursos
 use App\Http\Resources\CodigosPostalesResource;
-use App\Http\Resources\ErrorResource;
-use App\Http\Resources\ArrayCodigosPostalesResource;
+use App\Http\Resources\ArrayResource;
 
 class CodigosPostalesController extends Controller
 {
@@ -31,7 +30,7 @@ class CodigosPostalesController extends Controller
         if(count($codigo_postal) == 0)
         {
 
-            return new ErrorResource(
+            return new ArrayResource(
                 [
                     "code" => 404,
                     "message" => "No se encontró el código postal",
@@ -70,7 +69,7 @@ class CodigosPostalesController extends Controller
         if(count($codigo_postal) == 0)
         {
 
-            return new ErrorResource(
+            return new ArrayResource(
                 [
                     "code" => 404,
                     "message" => "No se encontró el código postal",
@@ -79,7 +78,7 @@ class CodigosPostalesController extends Controller
         
         }
         else{
-            return new ArrayCodigosPostalesResource($codigos_postales);
+            return new ArrayResource($codigos_postales);
         }
         
 

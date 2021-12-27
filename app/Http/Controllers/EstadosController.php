@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Arr;
 
-use App\Http\Resources\EstadosResource;
+use App\Http\Resources\ArrayResource;
+
 
 class EstadosController extends Controller
 {
@@ -19,7 +21,13 @@ class EstadosController extends Controller
             ->orderBy('d_estado', 'asc')
             ->get();
 
-        return EstadosResource::collection($estados);
+        
+        //colapsamos los estados
+
+        $array = Arr::pluck($estados, 'd_estado');
+        $estados=['estados' => $array];
+
+        return new ArrayResource($estados);
 
     }
 }

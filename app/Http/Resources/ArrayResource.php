@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class EstadosResource extends JsonResource
+class ArrayResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,8 +14,6 @@ class EstadosResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'estado' => $this->d_estado,
-        ];
+        return parent::toArray($request);
     }
 }
