@@ -54,8 +54,72 @@ class EstadosController extends Controller
         $array = Arr::pluck($municipios, 'd_mnpio');
         $municipios=['municipios' => $array];
 
-        return new ArrayResource($municipios);
+        if(count($municipios) == 0)
+        {
+
+            return new ArrayResource(
+                [
+                    "code" => 404,
+                    "message" => "No se encontró el municipio",
+                ]
+            );
+        
+        }
+        else{
+            return new ArrayResource($municipios);
+        }  
+
+
     }
+
+    //colonias por municipio
+
+    public function ObtenerColoniasMunicipio(Request $request){
+
+        $request->validate([
+            'municipio' => 'required|string',
+            'estado' => 'required|string',
+        ], [
+            'municipio.required' => 'El municipio es requerido',
+            'municipio.string' => 'El municipio debe ser un string',
+            'estado.required' => 'El estado es requerido',
+            'estado.string' => 'El estado debe ser un string',
+        ]);
+
+        //obtenemos las colonias
+
+        $colonias = DB::table('codigos_postales')
+            ->select('d_asenta')
+            ->where('d_mnpio', $request->municipio)
+            ->where('d_estado', $request->estado)
+            ->distinct()
+            ->orderBy('d_asenta', 'asc')
+            ->get();
+
+        //colapsamos las colonias
+        $array = Arr::pluck($colonias, 'd_asenta');
+        $colonias=['colonias' => $array];
+
+        if(count($colonias) == 0)
+        {
+
+            return new ArrayResource(
+                [
+                    "code" => 404,
+                    "message" => "No se encontró el municipio",
+                ]
+            );
+        
+        }
+        else{
+            return new ArrayResource($colonias);
+        }  
+
+
+    
+
+    }
+
 
 
 }

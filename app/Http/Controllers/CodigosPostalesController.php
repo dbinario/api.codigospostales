@@ -179,5 +179,57 @@ class CodigosPostalesController extends Controller
 
     }
 
+    public function ObtenerCodigosPostalesEstado(Request $request){
+
+        $request->validate([
+            'estado' => 'required|string',
+        ], [
+            'estado.required' => 'El estado es requerido',
+            'estado.string' => 'El estado debe ser un string',
+        ]);
+
+        $codigos_postales = DB::table('codigos_postales')
+        ->select('d_codigo')
+        ->distinct()
+        ->where('d_estado', $request->estado)
+        ->get();
+
+        
+           //colapsamos el array
+           $array = Arr::pluck($codigos_postales, 'd_codigo');
+           //le creamos el array para poder retornar la informacion
+           $codigos_postales=['codigos_postales' => $array];
+
+
+           
+           if(count($codigos_postales) == 0)
+           {
+   
+               return new ArrayResource(
+                   [
+                       "code" => 404,
+                       "message" => "No se encontró el código postal",
+                   ]
+               );
+           
+           }
+           else{
+               return new ArrayResource($codigos_postales);
+           }  
+
+    }
+
+
+    public function BusquedaAvanzada(Request $request){
+
+        $codigos_postales = DB::table('codigos_postales')
+        ->select('d_codigo')
+        ->distinct()
+        ->get();
+
+
+    }
+
+
 
 }
