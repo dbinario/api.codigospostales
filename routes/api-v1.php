@@ -16,6 +16,16 @@ Route::post('buscar_cp',
             [CodigosPostalesController::class,'CoincidenciaCodigoPostal'])
             ->name('buscar_cp');
 
+Route::post('cp_municipio', 
+            [CodigosPostalesController::class,'CodigosPostalesMunicipio'])
+            ->name('cp_municipio');
+
+Route::post('cp_colonia',
+            [CodigosPostalesController::class,'ObtenerColoniasCP'])
+            ->name('cp_colonia');            
+
 
 //obtener estados
 Route::get('estados', [EstadosController::class,'ObtenerEstados'])->name('estados');
+
+Route::post('municipios', [EstadosController::class,'ObtenerMunicipios'])->name('municipios');

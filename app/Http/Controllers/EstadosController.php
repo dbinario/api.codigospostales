@@ -30,4 +30,32 @@ class EstadosController extends Controller
         return new ArrayResource($estados);
 
     }
+
+    //municipios por estado
+    public function ObtenerMunicipios(Request $request)
+    {
+        //validamos que viene el estado
+        $request->validate([
+            'estado' => 'required|string',
+        ], [
+            'estado.required' => 'El estado es requerido',
+            'estado.string' => 'El estado debe ser una cadena de texto',
+        ]);
+        
+        //obtenemos los municipios
+        $municipios = DB::table('codigos_postales')
+            ->select('d_mnpio')
+            ->where('d_estado', $request->estado)
+            ->distinct()
+            ->orderBy('d_mnpio', 'asc')
+            ->get();
+
+        //colapsamos los municipios
+        $array = Arr::pluck($municipios, 'd_mnpio');
+        $municipios=['municipios' => $array];
+
+        return new ArrayResource($municipios);
+    }
+
+
 }
