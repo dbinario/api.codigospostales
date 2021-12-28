@@ -17,21 +17,22 @@ class CreateCodigosPostalesTable extends Migration
             $table->charset = 'utf8mb4';
             $table->collation = 'utf8mb4_unicode_ci';
             $table->id();
-            $table->string('d_codigo');
-            $table->string('d_asenta');
-            $table->string('d_tipo_asenta');
-            $table->string('d_mnpio');
-            $table->string('d_estado');
-            $table->string('d_ciudad');
-            $table->string('d_CP');
-            $table->string('c_estado');
-            $table->string('c_oficina');
-            $table->string('c_CP');
-            $table->string('c_tipo_asenta');
-            $table->string('c_mnpio');
-            $table->string('id_asenta_cpcons');
-            $table->string('d_zona');
-            $table->string('c_cve_ciudad');
+            $table->string('d_codigo')->default('');
+            $table->string('d_asenta')->default('');
+            $table->string('d_tipo_asenta')->default('');
+            $table->string('d_mnpio')->default('');
+            $table->string('d_estado')->default('');
+            $table->string('d_ciudad')->default('');
+            $table->string('d_CP')->default('');
+            $table->string('c_estado')->default('');
+            $table->string('c_oficina')->default('');
+            $table->string('c_CP')->default('');
+            $table->string('c_tipo_asenta')->default('');
+            $table->string('c_mnpio')->default('');
+            $table->string('id_asenta_cpcons')->default('');
+            $table->string('d_zona')->default('');
+            $table->string('c_cve_ciudad')->default('');
+            $table->timestamps();
             
         });
     }
