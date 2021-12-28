@@ -79,11 +79,6 @@ class SepomexController extends Controller
                         $CP->d_zona=$cp[13];
                         $CP->c_cve_ciudad=$cp[14];
 
-
-
-                        
-                        
-
                         $CP->save();
 
                         
