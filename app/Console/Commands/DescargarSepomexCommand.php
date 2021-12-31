@@ -3,10 +3,13 @@
 namespace App\Console\Commands;
 
 use App\Http\Controllers\SepomexController;
+use App\Traits\SepomexTrait;
 use Illuminate\Console\Command;
 
 class DescargarSepomexCommand extends Command
 {
+
+    use SepomexTrait;
     /**
      * The name and signature of the console command.
      *
@@ -42,7 +45,7 @@ class DescargarSepomexCommand extends Command
 
         //descarga la base de datos de sepomex
 
-        SepomexController::DescargarSepomex();
+        $this->DescargarSepomexTrait();
 
 
         $this->info('Base de datos descargada');

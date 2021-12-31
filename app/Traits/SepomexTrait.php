@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Traits;
+
 
 use App\Models\CodigosPostales;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 
-
-
-class SepomexController extends Controller
+trait SepomexTrait
 {
-    //
 
-    public static function DescargarSepomex(){
+    public function DescargarSepomexTrait(){
 
         $response = Http::asForm()->post('https://www.correosdemexico.gob.mx/SSLServicios/ConsultaCP/CodigoPostal_Exportar.aspx',[
 
@@ -32,12 +30,13 @@ class SepomexController extends Controller
 
 
         Storage::put('ultima_version.zip', $response->getBody());
+        Log::info('Descarga completa');
 
 
     }
 
 
-    public static function ProcesarSepomex(){
+    public function ProcesarSepomexTrait(){
             
             //descomprimimos el archivo        
             $zip = new \ZipArchive;
@@ -47,10 +46,12 @@ class SepomexController extends Controller
                 $zip->close();  
             } 
             
+            Log::info('Archivo descomprimido');
 
             $i=0; //contador de línea que se está leyendo
             $numlinea = 1; //línea que se desea borrar a esa se le asigna el indice, iniciando en 0 como primera 
 
+            Log::info('iniciando proceso de procesar el archivo');
             //leer archivo
             $file = fopen(storage_path('app/CPdescarga.txt'), "r");
             if($file){
@@ -79,9 +80,7 @@ class SepomexController extends Controller
                         $CP->d_zona=$cp[13];
                         $CP->c_cve_ciudad=$cp[14];
 
-                        $CP->save();
-
-                        
+                        $CP->save();    
                     
                     }
                 
@@ -90,16 +89,15 @@ class SepomexController extends Controller
                 }
 
             fclose($file);
+            Log::info('Termina el proceso de procesado del archivo');
 
     
                 }
 
                 //eliminamos los archivos
-                Storage::delete(['app/CPdescarga.txt','app/ultima_version.zip']);
+                Storage::delete(['CPdescarga.txt','ultima_version.zip']);
 
 
             }
-
-          
 
 }

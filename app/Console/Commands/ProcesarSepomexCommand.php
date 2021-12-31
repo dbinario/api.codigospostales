@@ -3,11 +3,13 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Http\Controllers\SepomexController;
-
+use App\Traits\SepomexTrait;
+use Illuminate\Support\Facades\DB;
 
 class ProcesarSepomexCommand extends Command
 {
+    use SepomexTrait;
+
     /**
      * The name and signature of the console command.
      *
@@ -40,7 +42,10 @@ class ProcesarSepomexCommand extends Command
     public function handle()
     {
         $this->info('Procesando base de datos de sepomex');
-        SepomexController::ProcesarSepomex();
+        $this->info('Limpieamos la tabla de sepomex');
+        DB::table('codigos_postales')->truncate();
+        $this->info('llenamos la base de datos de sepomex');
+        $this->ProcesarSepomexTrait();
         return 0;
     }
 }
