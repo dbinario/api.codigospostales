@@ -9,6 +9,7 @@ use Illuminate\Support\Arr;
 //recursos
 use App\Http\Resources\CodigosPostalesResource;
 use App\Http\Resources\ArrayResource;
+use App\Traits\PeticionesTrait;
 
 class CodigosPostalesController extends Controller
 {
@@ -46,7 +47,7 @@ class CodigosPostalesController extends Controller
         else{
             return CodigosPostalesResource::collection($codigo_postal);
         }
-
+    
     }
 
     public function CoincidenciaCodigoPostal(Request $request){

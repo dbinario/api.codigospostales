@@ -17,10 +17,9 @@ class CreatePeticionesTable extends Migration
             $table->id();
             $table->string('ip_address', 45);
             $table->string('metodo');
-            $table->text('peticion');
-            $table->string('metodo_peticion');
+            $table->text('endpoint_peticion');
+            $table->string('datos_enviados');
             $table->string('token');
-            $table->string('error');
             $table->timestamps();
         });
     }

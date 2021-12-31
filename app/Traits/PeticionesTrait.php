@@ -9,16 +9,29 @@ trait PeticionesTrait
 {
     public function GuardarPeticiones(Request $request)
     {
-        
+
+        if ($request->all()==null) {
+            $datos_enviados=json_encode('');
+        }else{
+            $datos_enviados=json_encode($request->all());
+        }
+
+        //este if es temporal, para que no se guarden tokens vacios
+        if($request->header('Authorization')==null){
+            $token='';
+        }else{
+            $token=$request->header('Authorization');
+        }
+
+
         $peticion = new Peticiones;
         $peticion->ip_address = $request->ip();
         $peticion->metodo = $request->method();
-        $peticion->peticion = $request->fullUrl();
-        $peticion->metodo_peticion = $request->method();
-        $peticion->token = $request->header('Authorization');
-        $peticion->error = $request->header('error');
+        $peticion->endpoint_peticion = $request->fullUrl();
+        $peticion->datos_enviados = $datos_enviados;
+        $peticion->token = $token;
         $peticion->save();
-
+        
 
     }
 }
