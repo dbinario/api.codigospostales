@@ -41,4 +41,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //relacion de uno a muchos api key
+    public function apikeys()
+    {
+        return $this->hasMany(ApiKey::class);
+    }
 }
