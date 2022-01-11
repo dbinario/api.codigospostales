@@ -15,7 +15,7 @@ class AddCreditosToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->mediumInteger('creditos')->default(1000)->after('password');
+            $table->mediumInteger('creditos')->default(0)->after('password');
         });
     }
 
