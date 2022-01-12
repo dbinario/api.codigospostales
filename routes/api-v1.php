@@ -10,7 +10,7 @@ use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\ApiKeyController;
 
 
-Route::middleware(['peticiones'])->group(function () {
+Route::middleware(['api_key'])->group(function () {
 
 //buscar por codigo postal
 Route::post('codigo_postal', [CodigosPostalesController::class,'BuscarCodigoPostal'])->name('codigo_postal');
