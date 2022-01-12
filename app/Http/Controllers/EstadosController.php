@@ -84,7 +84,8 @@ class EstadosController extends Controller
 
     //colonias por municipio
 
-    public function ObtenerColoniasMunicipio(Request $request){
+    public function ObtenerColoniasMunicipio(Request $request)
+    {
 
         $request->validate([
             'municipio' => 'required|string',

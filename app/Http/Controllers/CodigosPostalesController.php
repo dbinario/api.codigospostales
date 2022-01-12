@@ -61,7 +61,8 @@ class CodigosPostalesController extends Controller
     
     }
 
-    public function CoincidenciaCodigoPostal(Request $request){
+    public function CoincidenciaCodigoPostal(Request $request)
+    {
 
         $request->validate([
             'codigo_postal' => 'required|numeric|digits:4',
@@ -109,7 +110,8 @@ class CodigosPostalesController extends Controller
 
     }
 
-    public function CodigosPostalesMunicipio(Request $request){
+    public function CodigosPostalesMunicipio(Request $request)
+    {
 
         $request->validate([
             'municipio' => 'required|string',
@@ -203,7 +205,8 @@ class CodigosPostalesController extends Controller
 
     }
 
-    public function ObtenerCodigosPostalesEstado(Request $request){
+    public function ObtenerCodigosPostalesEstado(Request $request)
+    {
 
         $request->validate([
             'estado' => 'required|string',
