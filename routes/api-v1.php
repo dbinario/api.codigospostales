@@ -27,7 +27,7 @@ Route::post('cp_estado',[CodigosPostalesController::class,'ObtenerCodigosPostale
 Route::post('busqueda_avanzada',[CodigosPostalesController::class,'BusquedaAvanzada'])->name('Busqueda Avanzada');
 
 //obtener estados
-Route::get('estados', [EstadosController::class,'ObtenerEstados'])->name('Estados');
+Route::post('estados', [EstadosController::class,'ObtenerEstados'])->name('Estados');
 //obtener municipios
 Route::post('municipios', [EstadosController::class,'ObtenerMunicipios'])->name('Municipios');
 //obtener colonias

@@ -71,6 +71,10 @@ class CodigosPostalesController extends Controller
             'codigo_postal.digits' => 'El codigo postal debe tener 4 digitos',
         ]);
 
+        
+        //descontamos creditos
+        CreditosTrait::DescontarCreditos($request->id, 1);
+
         //buscamos por coincidencia de codigo postal
 
         $codigo_postal = DB::table('codigos_postales')
@@ -117,6 +121,10 @@ class CodigosPostalesController extends Controller
             'estado.string' => 'El estado debe ser un string',
         ]);
 
+        
+        //descontamos creditos
+        CreditosTrait::DescontarCreditos($request->id, 1);
+
         //buscamos por coincidencia de codigo postal
 
         $codigo_postal = DB::table('codigos_postales')
@@ -161,6 +169,10 @@ class CodigosPostalesController extends Controller
             'codigo_postal.digits' => 'El codigo postal debe tener 5 digitos',
         ]);
 
+        
+        //descontamos creditos
+        CreditosTrait::DescontarCreditos($request->id, 1);
+
         $colonias = DB::table('codigos_postales')
         ->select('d_asenta')
         ->distinct()
@@ -199,6 +211,10 @@ class CodigosPostalesController extends Controller
             'estado.required' => 'El estado es requerido',
             'estado.string' => 'El estado debe ser un string',
         ]);
+
+        
+        //descontamos creditos
+        CreditosTrait::DescontarCreditos($request->id, 1);
 
         $codigos_postales = DB::table('codigos_postales')
         ->select('d_codigo')

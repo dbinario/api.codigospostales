@@ -8,11 +8,15 @@ use Illuminate\Support\Arr;
 
 use App\Http\Resources\ArrayResource;
 
+use App\Traits\CreditosTrait;
+
 
 class EstadosController extends Controller
 {
+
+    use CreditosTrait;
     //
-    public function ObtenerEstados()
+    public function ObtenerEstados(Request $request)
     {
         //obtenemos los estados
         $estados = DB::table('codigos_postales')
@@ -21,6 +25,9 @@ class EstadosController extends Controller
             ->orderBy('d_estado', 'asc')
             ->get();
 
+            
+        //descontamos creditos
+        CreditosTrait::DescontarCreditos($request->id, 1);
         
         //colapsamos los estados
 
@@ -41,6 +48,9 @@ class EstadosController extends Controller
             'estado.required' => 'El estado es requerido',
             'estado.string' => 'El estado debe ser una cadena de texto',
         ]);
+
+         //descontamos creditos
+        CreditosTrait::DescontarCreditos($request->id, 1);
         
         //obtenemos los municipios
         $municipios = DB::table('codigos_postales')
@@ -85,6 +95,9 @@ class EstadosController extends Controller
             'estado.required' => 'El estado es requerido',
             'estado.string' => 'El estado debe ser un string',
         ]);
+
+        //descontamos creditos
+        CreditosTrait::DescontarCreditos($request->id, 1);
 
         //obtenemos las colonias
 
