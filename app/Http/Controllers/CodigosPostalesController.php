@@ -6,16 +6,23 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 
+
+use App\Traits\CreditosTrait;
+
+use App\Models\User;
+
 //recursos
 use App\Http\Resources\CodigosPostalesResource;
 use App\Http\Resources\ArrayResource;
 
 class CodigosPostalesController extends Controller
 {
+
+    use CreditosTrait;
     //funcion para buscar por codigo postal
     public function BuscarCodigoPostal(Request $request)
     {
-
+        
         $request->validate([
             'codigo_postal' => 'required|numeric|digits:5',
         ], [
@@ -24,13 +31,16 @@ class CodigosPostalesController extends Controller
             'codigo_postal.digits' => 'El codigo postal debe tener 5 digitos',
         ]);
 
+        //descontamos creditos
+        CreditosTrait::DescontarCreditos($request->id, 1);
+
         //buscamos por codigo postal
         $codigo_postal = DB::table('codigos_postales')
             ->select('d_codigo', 'd_asenta',  'd_tipo_asenta', 'd_mnpio', 'd_estado', 'd_ciudad')
             ->where('d_codigo', $request->codigo_postal)
             ->get();
 
-        
+
         //regresamos la respuesta
         if(count($codigo_postal) == 0)
         {
@@ -46,6 +56,8 @@ class CodigosPostalesController extends Controller
         else{
             return CodigosPostalesResource::collection($codigo_postal);
         }
+
+        
     
     }
 

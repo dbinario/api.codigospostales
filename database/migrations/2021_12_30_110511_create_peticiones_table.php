@@ -19,7 +19,7 @@ class CreatePeticionesTable extends Migration
             $table->string('metodo');
             $table->text('endpoint_peticion');
             $table->string('datos_enviados');
-            $table->string('api_key');
+            $table->string('api_key')->nullable();
             $table->timestamps();
         });
     }
