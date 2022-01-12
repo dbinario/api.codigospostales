@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CodigosPostalesController;
 use App\Http\Controllers\EstadosController;
 use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\ApiKeyController;
 
 
 Route::middleware(['peticiones'])->group(function () {
@@ -23,16 +24,20 @@ Route::post('cp_colonia',[CodigosPostalesController::class,'ObtenerColoniasCP'])
 Route::post('cp_estado',[CodigosPostalesController::class,'ObtenerCodigosPostalesEstado'])->name('cp_estado');     
 
 //Busqueda avanzada
-Route::post('busqueda_avanzada',[CodigosPostalesController::class,'BusquedaAvanzada'])->name('busqueda_avanzada');
+Route::post('busqueda_avanzada',[CodigosPostalesController::class,'BusquedaAvanzada'])->name('Busqueda Avanzada');
 
 //obtener estados
-Route::get('estados', [EstadosController::class,'ObtenerEstados'])->name('estados');
+Route::get('estados', [EstadosController::class,'ObtenerEstados'])->name('Estados');
 //obtener municipios
-Route::post('municipios', [EstadosController::class,'ObtenerMunicipios'])->name('municipios');
+Route::post('municipios', [EstadosController::class,'ObtenerMunicipios'])->name('Municipios');
 //obtener colonias
-Route::post('colonias',[CodigosPostalesController::class,'ObtenerColonias'])->name('colonias');
+Route::post('colonias',[CodigosPostalesController::class,'ObtenerColonias'])->name('Colonias');
 
 });
 
 
-Route::post('registar_usuario', [UsuariosController::class,'RegistrarUsuario'])->name('RegistrarUsuario');
+//registrar usuario
+Route::post('registrar_usuario', [UsuariosController::class,'RegistrarUsuario'])->name('Registrar Usuario');
+
+//solicitar api key se requiere token de usuario para consumirlo
+Route::post('crear_apikey', [ApiKeyController::class,'GenerarApiKey'])->name('Crear ApiKey')->middleware('auth:sanctum');

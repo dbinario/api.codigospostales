@@ -9,7 +9,6 @@ use Illuminate\Support\Arr;
 //recursos
 use App\Http\Resources\CodigosPostalesResource;
 use App\Http\Resources\ArrayResource;
-use App\Traits\PeticionesTrait;
 
 class CodigosPostalesController extends Controller
 {
