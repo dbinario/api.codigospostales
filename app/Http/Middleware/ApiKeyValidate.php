@@ -41,6 +41,10 @@ class ApiKeyValidate
         if($apikey->user->creditos>0){
 
 
+          //actualizamos la utilizacion del api key
+            $apikey->last_used_at = now();
+            $apikey->save();
+
             $user=$apikey->user;
 
             $request=$request->merge(['id'=>$user->id]);
