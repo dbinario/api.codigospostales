@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
+use App\Http\Resources\ArrayResource;
+
 class UsuariosController extends Controller
 {
     //
@@ -30,4 +32,17 @@ class UsuariosController extends Controller
         return response()->json(['user'=>$user,'token'=>$token],201);
 
     }
+
+    public function CreditosUsuario(Request $request)
+    {
+        //localizamos al usuario y regresamos la cantidad de creditos que tiene
+        $user = User::find($request->id);
+
+        $creditos = ['creditos' => $user->creditos];
+
+        return new ArrayResource($creditos);
+        
+    }
+
+
 }

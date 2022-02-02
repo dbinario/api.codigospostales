@@ -33,6 +33,10 @@ Route::post('municipios', [EstadosController::class,'ObtenerMunicipios'])->name(
 //obtener colonias
 Route::post('colonias',[CodigosPostalesController::class,'ObtenerColonias'])->name('Colonias');
 
+//regresar creditos
+Route::post('creditos_usuario', [UsuariosController::class,'CreditosUsuario'])->name('Creditos Usuario');
+
+
 });
 
 

@@ -9,7 +9,6 @@ use Illuminate\Support\Arr;
 
 use App\Traits\CreditosTrait;
 
-use App\Models\User;
 
 //recursos
 use App\Http\Resources\CodigosPostalesResource;
