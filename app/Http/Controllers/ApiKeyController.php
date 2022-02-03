@@ -8,6 +8,7 @@ use App\Models\ApiKey;
 
 use Illuminate\Support\Facades\DB;
 
+use App\Http\Resources\ArrayResource;
 
 
 class ApiKeyController extends Controller
@@ -40,11 +41,10 @@ class ApiKeyController extends Controller
             'user_id'=>$request->user()->id,
         ]);
         
-
-        return response()->json([
+        //retornamos el api key creado
+        return  new ArrayResource([
             'api_key'=>$api_key->api_key,
         ]);
-        
     }
 
 }
