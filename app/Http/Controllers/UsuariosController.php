@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Configuraciones;
 
 use App\Http\Resources\ArrayResource;
+use Illuminate\Support\Facades\Auth;
 
 class UsuariosController extends Controller
 {
@@ -30,10 +31,42 @@ class UsuariosController extends Controller
             'password' => Hash::make($request->input('password')),
         ]);
         
-        $token=$user->createToken('Laravel Password Grant Client')->plainTextToken;
+        return response()->json(['message'=>'Usuario registrado correctamente'],201);
         
-        return response()->json(['user'=>$user,'token'=>$token],201);
-        
+    }
+
+
+    public function AutenticarUsuario(Request $request){
+        //
+
+        $request->validate([
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:8',
+        ],[
+            'email.required' => 'El email es requerido',
+            'email.string' => 'El email debe ser una cadena de texto',
+            'email.email' => 'El email debe ser un email valido',
+            'email.max' => 'El email debe tener como maximo 255 caracteres',
+            'password.required' => 'El password es requerido',
+            'password.string' => 'El password debe ser una cadena de texto',
+            'password.min' => 'El password debe tener como minimo 8 caracteres',
+        ]);
+
+        if(Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])){
+
+            $user=User::where('email',$request->input('email'))->firstorFail();
+
+            $user->tokens()->delete();
+    
+            $token=$user->createToken('Laravel Password Grant Client')->plainTextToken;
+    
+            return response()->json(['user'=>$user,'token'=>$token],200);
+
+        }else{
+
+            return response()->json(['message'=>'El email o el password son incorrectos'],401);
+        }
+
     }
 
     public function CreditosUsuario(Request $request)
