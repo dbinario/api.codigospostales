@@ -22,6 +22,11 @@ class UsuariosController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
+        ],[
+            'name.required' => 'El nombre es requerido',
+            'email.required' => 'El email es requerido',
+            'password.required' => 'El password es requerido',
+            'password.min' => 'El password debe tener al menos 8 caracteres',
         ]);
 
         $user=User::create([
