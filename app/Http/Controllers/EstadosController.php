@@ -42,6 +42,12 @@ class EstadosController extends Controller
     //municipios por estado
     public function ObtenerMunicipios(Request $request)
     {
+
+        
+         //descontamos creditos
+         CreditosTrait::DescontarCreditos($request->id, 1);
+
+        
         //validamos que viene el estado
         $request->validate([
             'estado' => 'required|string',
@@ -50,8 +56,6 @@ class EstadosController extends Controller
             'estado.string' => 'El estado debe ser una cadena de texto',
         ]);
 
-         //descontamos creditos
-        CreditosTrait::DescontarCreditos($request->id, 1);
         
         //obtenemos los municipios
         $municipios = DB::table('codigos_postales')
@@ -89,6 +93,10 @@ class EstadosController extends Controller
     public function ObtenerColoniasMunicipio(Request $request)
     {
 
+        //descontamos creditos
+        CreditosTrait::DescontarCreditos($request->id, 1);
+
+
         $request->validate([
             'municipio' => 'required|string',
             'estado' => 'required|string',
@@ -99,8 +107,6 @@ class EstadosController extends Controller
             'estado.string' => 'El estado debe ser un string',
         ]);
 
-        //descontamos creditos
-        CreditosTrait::DescontarCreditos($request->id, 1);
 
         //obtenemos las colonias
 
