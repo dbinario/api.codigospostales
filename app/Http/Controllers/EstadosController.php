@@ -19,6 +19,8 @@ class EstadosController extends Controller
     //
     public function ObtenerEstados(Request $request)
     {
+        //descontamos creditos
+        CreditosTrait::DescontarCreditos($request->id, 1);
         //obtenemos los estados
         $estados = DB::table('codigos_postales')
             ->select('d_estado')
@@ -26,9 +28,6 @@ class EstadosController extends Controller
             ->orderBy('d_estado', 'asc')
             ->get();
 
-            
-        //descontamos creditos
-        CreditosTrait::DescontarCreditos($request->id, 1);
         
         //colapsamos los estados
 
