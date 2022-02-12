@@ -24,6 +24,9 @@ class CodigosPostalesController extends Controller
     public function BuscarCodigoPostal(Request $request)
     {
 
+         //descontamos creditos
+         CreditosTrait::DescontarCreditos($request->id, 1);
+
         $rules = [
             'codigo_postal' => 'required|numeric|digits:5',
         ];
@@ -48,8 +51,7 @@ class CodigosPostalesController extends Controller
 
         }
 
-        //descontamos creditos
-        CreditosTrait::DescontarCreditos($request->id, 1);
+       
 
         //buscamos por codigo postal
         $codigo_postal = DB::table('codigos_postales')
@@ -66,7 +68,7 @@ class CodigosPostalesController extends Controller
                 [
                  'code'=>404, 
                  'message' => 'No se encontró el código postal',
-                 'codigo_postal'=>".$request->codigo_postal."
+                 'codigo_postal'=>$request->codigo_postal
                 ]
             );
         
@@ -81,6 +83,8 @@ class CodigosPostalesController extends Controller
 
     public function CoincidenciaCodigoPostal(Request $request)
     {
+        //descontamos creditos
+        CreditosTrait::DescontarCreditos($request->id, 1);
 
         $rules = [
             'codigo_postal' => 'required|numeric|digits:4',
@@ -105,8 +109,7 @@ class CodigosPostalesController extends Controller
         }
 
 
-        //descontamos creditos
-        CreditosTrait::DescontarCreditos($request->id, 1);
+        
 
         //buscamos por coincidencia de codigo postal
 
@@ -131,7 +134,7 @@ class CodigosPostalesController extends Controller
                 [
                 'code'=>404, 
                 "message" => "No se encontró el código postal" ,
-                'codigo_postal'=>".$request->codigo_postal."
+                'codigo_postal'=>$request->codigo_postal
                 ]);
         
 
@@ -146,19 +149,34 @@ class CodigosPostalesController extends Controller
     public function CodigosPostalesMunicipio(Request $request)
     {
 
-        $request->validate([
+        //descontamos creditos
+        CreditosTrait::DescontarCreditos($request->id, 1);
+
+        $rules = [
             'municipio' => 'required|string',
             'estado' => 'required|string',
-        ], [
+        ];
+
+        $messages=[
             'municipio.required' => 'El municipio es requerido',
             'municipio.string' => 'El municipio debe ser un string',
             'estado.required' => 'El estado es requerido',
             'estado.string' => 'El estado debe ser un string',
-        ]);
+        ];
+
+        $data=$request->all();
+
+        $validator = Validator::make($data, $rules,$messages);
+        
+        if ($validator->fails()) 
+        {
+
+            return new ErrorResource( ['code'=>422, 'validacion'=>$validator->errors() ]);    
+
+        }
 
         
-        //descontamos creditos
-        CreditosTrait::DescontarCreditos($request->id, 1);
+     
 
         //buscamos por coincidencia de codigo postal
 
@@ -184,7 +202,7 @@ class CodigosPostalesController extends Controller
                         'code'=>404, 
                         "message" => "No se encontraron códigos postales",
                         'municipio'=>".$request->municipio.",
-                        'estado'=>".$request->estado."
+                        'estado'=>$request->estado
                     ]);
         
             
@@ -197,18 +215,30 @@ class CodigosPostalesController extends Controller
 
     public function ObtenerColoniasCP(Request $request)
     {
-        
-        $request->validate([
-            'codigo_postal' => 'required|numeric|digits:5'
-        ], [
+
+        //descontamos creditos
+        CreditosTrait::DescontarCreditos($request->id, 1);
+
+        $rules = [
+            'codigo_postal' => 'required|numeric|digits:5',
+        ];
+
+        $messages=[
             'codigo_postal.required' => 'El codigo postal es requerido',
             'codigo_postal.numeric' => 'El codigo postal debe ser numerico',
             'codigo_postal.digits' => 'El codigo postal debe tener 5 digitos',
-        ]);
+        ];
 
-        
-        //descontamos creditos
-        CreditosTrait::DescontarCreditos($request->id, 1);
+        $data=$request->all();
+
+        $validator = Validator::make($data, $rules,$messages);
+
+        if ($validator->fails()) 
+        {
+
+            return new ErrorResource( ['code'=>422, 'validacion'=>$validator->errors() ]);    
+
+        }
 
         $colonias = DB::table('codigos_postales')
         ->select('d_asenta')
@@ -230,7 +260,7 @@ class CodigosPostalesController extends Controller
                 [
                     'code'=>404, 
                     "message" => "No se encontró informacion del código postal",
-                    'codigo_postal'=>".$request->codigo_postal."
+                    'codigo_postal'=>$request->codigo_postal
                 ]);
         
            
@@ -244,16 +274,29 @@ class CodigosPostalesController extends Controller
     public function ObtenerCodigosPostalesEstado(Request $request)
     {
 
-        $request->validate([
-            'estado' => 'required|string',
-        ], [
-            'estado.required' => 'El estado es requerido',
-            'estado.string' => 'El estado debe ser un string',
-        ]);
-
-        
         //descontamos creditos
         CreditosTrait::DescontarCreditos($request->id, 1);
+
+        $rules = [
+            'estado' => 'required|string',
+        ];
+
+        $messages=[
+            'estado.required' => 'El estado es requerido',
+            'estado.string' => 'El estado debe ser un string',
+        ];
+
+        $data=$request->all();
+
+        $validator = Validator::make($data, $rules,$messages);
+
+        if ($validator->fails()) 
+        {
+
+            return new ErrorResource( ['code'=>422, 'validacion'=>$validator->errors() ]);    
+
+        }
+
 
         $codigos_postales = DB::table('codigos_postales')
         ->select('d_codigo')
