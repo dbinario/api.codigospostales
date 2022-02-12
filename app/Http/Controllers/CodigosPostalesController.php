@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
-
+use Illuminate\Support\Facades\Validator;
 
 use App\Traits\CreditosTrait;
 
@@ -13,6 +13,8 @@ use App\Traits\CreditosTrait;
 //recursos
 use App\Http\Resources\CodigosPostalesResource;
 use App\Http\Resources\ArrayResource;
+use App\Http\Resources\ErrorResource;
+
 
 class CodigosPostalesController extends Controller
 {
@@ -21,14 +23,30 @@ class CodigosPostalesController extends Controller
     //funcion para buscar por codigo postal
     public function BuscarCodigoPostal(Request $request)
     {
-        
-        $request->validate([
+
+        $rules = [
             'codigo_postal' => 'required|numeric|digits:5',
-        ], [
+        ];
+
+        $messages=[
             'codigo_postal.required' => 'El codigo postal es requerido',
             'codigo_postal.numeric' => 'El codigo postal debe ser numerico',
             'codigo_postal.digits' => 'El codigo postal debe tener 5 digitos',
-        ]);
+        ];
+
+        $data=$request->all();
+
+        $validator = Validator::make($data, $rules,$messages);
+        
+        if ($validator->fails()) {
+
+            return new ErrorResource(
+                 [
+                     'code'=>422, 
+                     'validacion'=>$validator->errors() 
+                 ]);
+
+        }
 
         //descontamos creditos
         CreditosTrait::DescontarCreditos($request->id, 1);
@@ -44,10 +62,11 @@ class CodigosPostalesController extends Controller
         if(count($codigo_postal) == 0)
         {
 
-            return new ArrayResource(
+            return new ErrorResource( 
                 [
-                    "code" => 404,
-                    "message" => "No se encontró el código postal",
+                 'code'=>404, 
+                 'message' => 'No se encontró el código postal',
+                 'codigo_postal'=>".$request->codigo_postal."
                 ]
             );
         
@@ -63,15 +82,29 @@ class CodigosPostalesController extends Controller
     public function CoincidenciaCodigoPostal(Request $request)
     {
 
-        $request->validate([
+        $rules = [
             'codigo_postal' => 'required|numeric|digits:4',
-        ], [
+        ];
+
+        $messages=[
             'codigo_postal.required' => 'El codigo postal es requerido',
             'codigo_postal.numeric' => 'El codigo postal debe ser numerico',
             'codigo_postal.digits' => 'El codigo postal debe tener 4 digitos',
-        ]);
+        ];
 
         
+        $data=$request->all();
+
+        $validator = Validator::make($data, $rules,$messages);
+        
+        if ($validator->fails()) 
+        {
+
+            return new ErrorResource( ['code'=>422, 'validacion'=>$validator->errors() ]);    
+
+        }
+
+
         //descontamos creditos
         CreditosTrait::DescontarCreditos($request->id, 1);
 
@@ -94,13 +127,14 @@ class CodigosPostalesController extends Controller
         if(count($codigo_postal) == 0)
         {
 
-            return new ArrayResource(
+            return new ErrorResource( 
                 [
-                    "code" => 404,
-                    "message" => "No se encontró el código postal",
-                ]
-            );
+                'code'=>404, 
+                "message" => "No se encontró el código postal" ,
+                'codigo_postal'=>".$request->codigo_postal."
+                ]);
         
+
         }
         else{
             return new ArrayResource($codigos_postales);
@@ -144,13 +178,15 @@ class CodigosPostalesController extends Controller
 
             if(count($codigo_postal) == 0)
             {
-    
-                return new ArrayResource(
+
+                return new ErrorResource( 
                     [
-                        "code" => 404,
-                        "message" => "No se encontró el código postal",
-                    ]
-                );
+                        'code'=>404, 
+                        "message" => "No se encontraron códigos postales",
+                        'municipio'=>".$request->municipio.",
+                        'estado'=>".$request->estado."
+                    ]);
+        
             
             }
             else{
@@ -190,12 +226,13 @@ class CodigosPostalesController extends Controller
            if(count($colonias) == 0)
            {
    
-               return new ArrayResource(
-                   [
-                       "code" => 404,
-                       "message" => "No se encontró el código postal",
-                   ]
-               );
+            return new ErrorResource( 
+                [
+                    'code'=>404, 
+                    "message" => "No se encontró informacion del código postal",
+                    'codigo_postal'=>".$request->codigo_postal."
+                ]);
+        
            
            }
            else{
@@ -235,12 +272,7 @@ class CodigosPostalesController extends Controller
            if(count($codigos_postales) == 0)
            {
    
-               return new ArrayResource(
-                   [
-                       "code" => 404,
-                       "message" => "No se encontró el código postal",
-                   ]
-               );
+            return new ErrorResource( ['code'=>404, "message" => "No se encontró el código postal" ]);     
            
            }
            else{

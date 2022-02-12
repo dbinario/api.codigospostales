@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 
 use App\Http\Resources\ArrayResource;
+use App\Http\Resources\ErrorResource;
 
 use App\Traits\CreditosTrait;
 
@@ -67,10 +68,11 @@ class EstadosController extends Controller
         if(count($municipios) == 0)
         {
 
-            return new ArrayResource(
+            return new ErrorResource(
                 [
                     "code" => 404,
                     "message" => "No se encontró el municipio",
+                    "estado" => $request->estado
                 ]
             );
         
@@ -117,7 +119,7 @@ class EstadosController extends Controller
         if(count($colonias) == 0)
         {
 
-            return new ArrayResource(
+            return new ErrorResource(
                 [
                     "code" => 404,
                     "message" => "No se encontró el municipio",

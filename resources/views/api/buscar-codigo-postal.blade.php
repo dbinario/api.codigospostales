@@ -12,8 +12,9 @@ curl \
                 <code class="higlighted break-word">http://api.codigospostales.test/v1/codigo_postal</code>
             </p>
             <br>
-            <pre><code class="json">
-Respuesta :
+            <pre>
+                <code class="json">
+Respuesta Correcta:
 
 {
     "data": [
@@ -27,7 +28,20 @@ Respuesta :
         }
     ]
 }
-                </code></pre>
+                </code>
+            </pre>
+            <pre>
+                <code class="json">
+Respuesta Erronea:
+
+{
+    "data": {
+        "code": 404,
+        "message": "No se encontró el código postal"
+    }
+}
+                </code>
+            </pre>
             <h4>PARAMETROS</h4>
             <table class="central-overflow-x">
                 <thead>

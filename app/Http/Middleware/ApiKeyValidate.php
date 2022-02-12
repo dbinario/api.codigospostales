@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\ApiKey;
 use App\Traits\PeticionesTrait;
 
+use App\Http\Resources\ErrorResource;
+
 class ApiKeyValidate
 {
     use PeticionesTrait;
@@ -20,10 +22,16 @@ class ApiKeyValidate
 
         //verificamos que viene un api_key en la peticion
         if (!$request->has("api_key")) {
-            return response()->json([
-              'status' => 401,
-              'message' => 'Es necesario proporcionar una API Key.',
-            ], 401);
+
+            return new ErrorResource(
+              [
+                "code" => 401,
+                "message" => "No se encontró la api_key",
+              ]
+            );
+      
+
+
           }
 
         //extraer el api_key de la peticion
@@ -31,10 +39,12 @@ class ApiKeyValidate
 
         //comprobar que el api_key existe
         if (!$apikey) {
-            return response()->json([
-              'status' => 401,
-              'message' => 'Acceso no autorizado',
-            ], 401);
+            return new ErrorResource(
+              [
+                "code" => 401,
+                "message" => "Acceso no autorizado",
+              ]
+            );
         }
 
         //comprobamos si tiene creditos suficientes para generar la peticion
@@ -53,10 +63,11 @@ class ApiKeyValidate
 
 
         }else{
-            return response()->json([
-              'status' => 401,
+          return new ErrorResource(
+            [
+              'code' => 401,
               'message' => 'No tienes creditos suficientes',
-            ], 401);
+            ]);
         }  
 
         
