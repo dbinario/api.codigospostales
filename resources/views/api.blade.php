@@ -53,7 +53,7 @@
                 <a>Obtener Estados</a>
             </li>
             <li class="scroll-to-link" data-target="content-errors">
-                <a>Errors</a>
+                <a>Errores</a>
             </li>
         </ul>
     </div>

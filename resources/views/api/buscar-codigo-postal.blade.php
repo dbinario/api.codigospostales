@@ -14,7 +14,7 @@ curl \
             <br>
             <pre>
                 <code class="json">
-Respuesta Correcta:
+Respuesta:
 
 {
     "data": [
@@ -27,18 +27,6 @@ Respuesta Correcta:
             "ciudad": "Ciudad de México"
         }
     ]
-}
-                </code>
-            </pre>
-            <pre>
-                <code class="json">
-Respuesta Erronea:
-
-{
-    "data": {
-        "code": 404,
-        "message": "No se encontró el código postal"
-    }
 }
                 </code>
             </pre>
@@ -59,7 +47,7 @@ Respuesta Erronea:
                 </tr>
                 <tr>
                     <td>codigo_postal</td>
-                    <td>numerico</td>
+                    <td>Numeric</td>
                     <td>El codigo postal a buscar debe ser de 5 digitos</td>
                 </tr>
                 </tbody>

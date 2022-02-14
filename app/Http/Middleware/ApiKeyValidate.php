@@ -41,7 +41,7 @@ class ApiKeyValidate
         if (!$apikey) {
             return new ErrorResource(
               [
-                "code" => 401,
+                "code" => 402,
                 "message" => "Acceso no autorizado",
               ]
             );
@@ -65,7 +65,7 @@ class ApiKeyValidate
         }else{
           return new ErrorResource(
             [
-              'code' => 401,
+              'code' => 403,
               'message' => 'No tienes creditos suficientes',
             ]);
         }  

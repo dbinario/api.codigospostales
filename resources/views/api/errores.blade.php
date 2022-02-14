@@ -1,38 +1,38 @@
 <div class="overflow-hidden content-section" id="content-errors">
-            <h2>Errors</h2>
+            <h2>Errores</h2>
             <p>
-                The Westeros API uses the following error codes:
+                La API de Códigos Postales proporciona una respuesta en formato JSON, esta respuesta puede contener uno o varios errores.
             </p>
             <table>
                 <thead>
                 <tr>
-                    <th>Error Code</th>
-                    <th>Meaning</th>
+                    <th>Codigo de Error</th>
+                    <th>Significado</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <td>X000</td>
+                    <td>401</td>
                     <td>
-                        Some parameters are missing. This error appears when you don't pass every mandatory parameters.
+                        Falta el api key en la en la petición.
                     </td>
                 </tr>
                 <tr>
-                    <td>X001</td>
+                    <td>402</td>
                     <td>
-                        Unknown or unvalid <code class="higlighted">secret_key</code>. This error appears if you use an unknow API key or if your API key expired.
+                        Acceso no autorizado.
                     </td>
                 </tr>
                 <tr>
-                    <td>X002</td>
+                    <td>403</td>
                     <td>
-                        Unvalid <code class="higlighted">secret_key</code> for this domain. This error appears if you use an  API key non specified for your domain. Developper or Universal API keys doesn't have domain checker.
+                        Creditos insuficientes.
                     </td>
                 </tr>
                 <tr>
-                    <td>X003</td>
+                    <td>422</td>
                     <td>
-                        Unknown or unvalid user <code class="higlighted">token</code>. This error appears if you use an unknow user <code class="higlighted">token</code> or if the user <code class="higlighted">token</code> expired.
+                        Falta algun parametro obligatorio, o el valor del parametro no es valido.
                     </td>
                 </tr>
                 </tbody>
