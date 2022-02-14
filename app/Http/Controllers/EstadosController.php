@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Validator;
 
 use App\Http\Resources\ArrayResource;
 use App\Http\Resources\ErrorResource;
@@ -46,14 +47,29 @@ class EstadosController extends Controller
          //descontamos creditos
          CreditosTrait::DescontarCreditos($request->id, 1);
 
-        
-        //validamos que viene el estado
-        $request->validate([
+         
+        $rules = [
             'estado' => 'required|string',
-        ], [
+        ];
+
+        $messages=[
             'estado.required' => 'El estado es requerido',
-            'estado.string' => 'El estado debe ser una cadena de texto',
-        ]);
+            'estado.string' => 'El estado debe ser un string',
+        ];
+
+        $data=$request->all();
+        
+        $validator = Validator::make($data, $rules,$messages);
+
+        if ($validator->fails()) {
+
+            return new ErrorResource(
+                 [
+                     'code'=>422, 
+                     'validacion'=>$validator->errors() 
+                 ]);
+
+        }
 
         
         //obtenemos los municipios
@@ -96,15 +112,31 @@ class EstadosController extends Controller
         CreditosTrait::DescontarCreditos($request->id, 1);
 
 
-        $request->validate([
+        $rules = [
             'municipio' => 'required|string',
             'estado' => 'required|string',
-        ], [
+        ];
+
+        $messages=[
             'municipio.required' => 'El municipio es requerido',
             'municipio.string' => 'El municipio debe ser un string',
             'estado.required' => 'El estado es requerido',
             'estado.string' => 'El estado debe ser un string',
-        ]);
+        ];
+
+        $data=$request->all();
+
+        $validator = Validator::make($data, $rules,$messages);
+
+        if ($validator->fails()) {
+
+            return new ErrorResource(
+                 [
+                     'code'=>422, 
+                     'validacion'=>$validator->errors() 
+                 ]);
+
+        }
 
 
         //obtenemos las colonias
