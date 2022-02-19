@@ -3,9 +3,13 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Traits\SepomexTrait;
+use Illuminate\Support\Facades\Log;
 
 class ActualizarSepomexCommand extends Command
 {
+    //el trait de separomex
+    use SepomexTrait;
     /**
      * The name and signature of the console command.
      *
@@ -37,13 +41,51 @@ class ActualizarSepomexCommand extends Command
      */
     public function handle()
     {
-        $this->info('Actualizando base de datos de sepomex');
+        $this->info('Empieza Proceso para actualizar la base de datos de sepomex');
         
-        $this->call('sepomex:descargar');
+        $this->info('Empieza la descarga de la base de datos de sepomex');
+
+        Log::info('Se inicia la descarga de la base de datos de sepomex');
+
+        //descarga la base de datos de sepomex
         
-        $this->call('sepomex:procesar');
+        if(!$this->descargarSepomex())
+        {
+            $this->error('No se pudo descargar la base de datos de sepomex');
+            Log::error('No se pudo descargar la base de datos de sepomex');
+            return;
+        }
+
+        $this->info('Se termino la descarga de la base de datos de sepomex');
+        Log::info('Se descargo la base de datos de sepomex de manera correcta');
+
+        if(!$this->DescomprimirSepomex())
+        {
+            $this->error('No se pudo descomprimir la base de datos de sepomex');
+            Log::error('No se pudo descomprimir la base de datos de sepomex');
+            return;
+        }
+
+        $this->info('Se descomprimio la base de datos de sepomex de manera correcta');
+        Log::info('Se descomprimio la base de datos de sepomex de manera correcta');
+
+        $this->info('Se inicia el proceso de procesar la base de datos de sepomex');
+        Log::info('Se inicia el proceso de procesar la base de datos de sepomex');
         
-        $this->info('Base de datos actualizada');
+
+        if(!$this->ProcesarSepomex())
+        {
+            $this->error('No se pudo procesar la base de datos de sepomex');
+            Log::error('No se pudo procesar la base de datos de sepomex');
+            return;
+        }
+
+        $this->info('Se termino el proceso de procesar la base de datos de sepomex');
+        Log::info('Se termino el proceso de procesar la base de datos de sepomex');
+        
+        $this->info('Se termino el proceso de actualizar la base de datos de sepomex');
+        Log::info('Se termino el proceso de actualizar la base de datos de sepomex');
+
         return 0;
     }
 }

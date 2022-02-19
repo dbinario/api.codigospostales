@@ -9,11 +9,15 @@ use App\Models\User;
 use App\Models\Configuraciones;
 
 use App\Http\Resources\ArrayResource;
+
+use App\Traits\CreditosTrait;
 use Illuminate\Support\Facades\Auth;
 
 class UsuariosController extends Controller
 {
     //
+
+    use CreditosTrait;
 
     public function RegistrarUsuario(Request $request)
     {
@@ -83,6 +87,17 @@ class UsuariosController extends Controller
 
         return new ArrayResource($creditos);
         
+    }
+
+
+    public function SumarCreditos(Request $request)
+    {
+        
+        
+        CreditosTrait::SumarCreditos($request->id, $request->creditos);
+
+        return new ArrayResource(['message'=>'Creditos sumados correctamente']);
+
     }
 
 

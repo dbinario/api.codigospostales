@@ -11,5 +11,12 @@ trait CreditosTrait
         $user->creditos = $user->creditos - $cantidad;
         $user->save();
     }
+
+    public static function SumarCreditos($user, $cantidad)
+    {
+        $user = User::find($user);
+        $user->creditos = $user->creditos + $cantidad;
+        $user->save();
+    }
     
 }

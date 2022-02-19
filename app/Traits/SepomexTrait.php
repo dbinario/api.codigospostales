@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 trait SepomexTrait
 {
 
-    public function DescargarSepomexTrait(){
+    public function DescargarSepomex(){
 
         $response = Http::asForm()->post('https://www.correosdemexico.gob.mx/SSLServicios/ConsultaCP/CodigoPostal_Exportar.aspx',[
 
@@ -28,25 +28,48 @@ trait SepomexTrait
             'btnDescarga.y'=>'12'
         ]);
 
+        
+        if($response->status()==200){    
+            
+            Storage::put('ultima_version.zip', $response->getBody());
+            Log::info('Descarga completa');
 
-        Storage::put('ultima_version.zip', $response->getBody());
-        Log::info('Descarga completa');
+            return true;
 
+        }else{
+
+            Log::info('Error al descargar');
+            return false;
+
+        }
 
     }
 
 
-    public function ProcesarSepomexTrait(){
+    public function DescomprimirSepomex(){
+
+          //descomprimimos el archivo        
+          $zip = new \ZipArchive;
+          $res = $zip->open(storage_path('app/ultima_version.zip'));
+          if ($res === TRUE) {
+              $zip->extractTo(storage_path('app/'));
+              $zip->close();  
+            return true;
+          }else{
+                
+                return false;
+          }
+          
+          
+
+    }
+
+    public function ProcesarSepomex(){
             
-            //descomprimimos el archivo        
-            $zip = new \ZipArchive;
-            $res = $zip->open(storage_path('app/ultima_version.zip'));
-            if ($res === TRUE) {
-                $zip->extractTo(storage_path('app/'));
-                $zip->close();  
-            } 
-            
-            Log::info('Archivo descomprimido');
+          
+
+            //comprobamos si existe el archivo que buscamos
+            if(Storage::exists('CPdescarga.txt')){
 
             $i=0; //contador de línea que se está leyendo
             $numlinea = 1; //línea que se desea borrar a esa se le asigna el indice, iniciando en 0 como primera 
@@ -62,7 +85,7 @@ trait SepomexTrait
                   if ($i > $numlinea)  // Si la linea que deseamos eliminar no es esta 
                     {
                         $cp = explode("|", utf8_encode($linea));
-                        
+                
                         $CP = new CodigosPostales;
                         $CP->d_codigo= $cp[0];
                         $CP->d_asenta=$cp[1];
@@ -79,9 +102,8 @@ trait SepomexTrait
                         $CP->id_asenta_cpcons=$cp[12];
                         $CP->d_zona=$cp[13];
                         $CP->c_cve_ciudad=$cp[14];
-
-                        $CP->save();    
-                    
+                        $CP->save(); 
+                        
                     }
                 
                   // Incrementamos nuestro contador de lineas
@@ -97,7 +119,11 @@ trait SepomexTrait
                 //eliminamos los archivos
                 Storage::delete(['CPdescarga.txt','ultima_version.zip']);
 
-
+                return true;
+            }else{
+                Log::info('No existe el archivo CPdescarga.txt');
+                return false;
+            }
             }
 
 }
