@@ -4,9 +4,11 @@ namespace App\Traits;
 
 
 use App\Models\CodigosPostales;
+use App\Models\CP_temporal;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 
 trait SepomexTrait
@@ -66,8 +68,6 @@ trait SepomexTrait
 
     public function ProcesarSepomex(){
             
-          
-
             //comprobamos si existe el archivo que buscamos
             if(Storage::exists('CPdescarga.txt')){
 
@@ -84,25 +84,25 @@ trait SepomexTrait
                 
                   if ($i > $numlinea)  // Si la linea que deseamos eliminar no es esta 
                     {
-                        $cp = explode("|", utf8_encode($linea));
+                        $cpa = explode("|", utf8_encode($linea));
                 
-                        $CP = new CodigosPostales;
-                        $CP->d_codigo= $cp[0];
-                        $CP->d_asenta=$cp[1];
-                        $CP->d_tipo_asenta =$cp[2];
-                        $CP->d_mnpio=$cp[3];
-                        $CP->d_estado=$cp[4];
-                        $CP->d_ciudad=$cp[5];
-                        $CP->d_CP=$cp[6];
-                        $CP->c_estado=$cp[7];
-                        $CP->c_oficina=$cp[8];
-                        $CP->c_CP=$cp[9];
-                        $CP->c_tipo_asenta=$cp[10];
-                        $CP->c_mnpio=$cp[11];
-                        $CP->id_asenta_cpcons=$cp[12];
-                        $CP->d_zona=$cp[13];
-                        $CP->c_cve_ciudad=$cp[14];
-                        $CP->save(); 
+                        $CPT = new CP_temporal();
+                        $CPT->d_codigo= $cpa[0];
+                        $CPT->d_asenta=$cpa[1];
+                        $CPT->d_tipo_asenta =$cpa[2];
+                        $CPT->d_mnpio=$cpa[3];
+                        $CPT->d_estado=$cpa[4];
+                        $CPT->d_ciudad=$cpa[5];
+                        $CPT->d_CP=$cpa[6];
+                        $CPT->c_estado=$cpa[7];
+                        $CPT->c_oficina=$cpa[8];
+                        $CPT->c_CP=$cpa[9];
+                        $CPT->c_tipo_asenta=$cpa[10];
+                        $CPT->c_mnpio=$cpa[11];
+                        $CPT->id_asenta_cpcons=$cpa[12];
+                        $CPT->d_zona=$cpa[13];
+                        $CPT->c_cve_ciudad=$cpa[14];
+                        $CPT->save(); 
                         
                     }
                 
@@ -116,10 +116,19 @@ trait SepomexTrait
     
                 }
 
+                
+                //limpiamos la tabla de codigos postales
+                DB::table('codigos_postales')->truncate();
+                //insertamos los codigos postales de la tabla temporal a la tabla codigos postales
+                DB::insert("INSERT INTO codigos_postales SELECT * FROM cp_temporal");
+                //limpieamos la tabla temporal
+                DB::table('cp_temporal')->truncate();
                 //eliminamos los archivos
                 Storage::delete(['CPdescarga.txt','ultima_version.zip']);
-
+                
+            
                 return true;
+                
             }else{
                 Log::info('No existe el archivo CPdescarga.txt');
                 return false;

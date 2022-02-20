@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Traits\SepomexTrait;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ActualizarSepomexCommand extends Command
@@ -81,12 +80,7 @@ class ActualizarSepomexCommand extends Command
             return;
         }
         
-        //eliminamos la tabla
-        $this->info('Se elimina la tabla sepomex');
-        Log::info('Se elimina la tabla sepomex');
-        DB::table('codigos_postales')->truncate();
-
-
+        
         if(!$this->ProcesarSepomex())
         {
             $this->error('No se pudo procesar la base de datos de sepomex');
