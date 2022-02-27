@@ -49,6 +49,9 @@
             <li class="scroll-to-link" data-target="content-get-buscar-codigo-postal">
                 <a>Buscar un codigo postal</a>
             </li>
+            <li class="scroll-to-link" data-target="content-get-coincidencia-codigo-postal">
+                <a>Coincidencia codigo postal</a>
+            </li>
             <li class="scroll-to-link" data-target="content-get-estados">
                 <a>Obtener Estados</a>
             </li>
@@ -64,6 +67,7 @@
         <!--- se documenta la api -->
        @include('api.bienvenidos')
        @include('api.buscar-codigo-postal')
+       @include('api.coincidencia-codigo-postal')
        @include('api.estados')
        @include('api.errores')
     </div>
