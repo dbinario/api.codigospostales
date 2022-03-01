@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
 use App\Models\Configuraciones;
 
 use App\Http\Resources\ArrayResource;
+use App\Http\Resources\ErrorResource;
+
 
 use App\Traits\CreditosTrait;
 use Illuminate\Support\Facades\Auth;
@@ -22,16 +25,35 @@ class UsuariosController extends Controller
     public function RegistrarUsuario(Request $request)
     {
         //
-        $request->validate([
+        $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-        ],[
+        ];
+
+        $messages=[
             'name.required' => 'El nombre es requerido',
             'email.required' => 'El email es requerido',
+            'email.email' => 'El email debe ser valido',
+            'email.unique' => 'El email ya existe',
             'password.required' => 'El password es requerido',
             'password.min' => 'El password debe tener al menos 8 caracteres',
-        ]);
+        ];
+
+        $data=$request->all();
+
+        $validator = Validator::make($data, $rules,$messages);
+
+        if ($validator->fails()) {
+
+            return new ErrorResource(
+                 [
+                     'code'=>422, 
+                     'validacion'=>$validator->errors() 
+                 ]);
+
+        }
+
 
         $user=User::create([
             'name' => $request->input('name'),
@@ -40,18 +62,21 @@ class UsuariosController extends Controller
             'password' => Hash::make($request->input('password')),
         ]);
         
-        return response()->json(['message'=>'Usuario registrado correctamente'],201);
+
+        return new ArrayResource($user);
+    
         
     }
 
 
     public function AutenticarUsuario(Request $request){
-        //
-
-        $request->validate([
+        
+        $rules=[
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:8',
-        ],[
+        ];
+
+        $messages=[
             'email.required' => 'El email es requerido',
             'email.string' => 'El email debe ser una cadena de texto',
             'email.email' => 'El email debe ser un email valido',
@@ -59,7 +84,21 @@ class UsuariosController extends Controller
             'password.required' => 'El password es requerido',
             'password.string' => 'El password debe ser una cadena de texto',
             'password.min' => 'El password debe tener como minimo 8 caracteres',
-        ]);
+        ];
+
+        $data=$request->all();
+
+        $validator = Validator::make($data, $rules,$messages);
+
+        if ($validator->fails()) {
+
+            return new ErrorResource(
+                 [
+                     'code'=>422, 
+                     'validacion'=>$validator->errors() 
+                 ]);
+
+        }
 
         if(Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])){
 
@@ -67,13 +106,22 @@ class UsuariosController extends Controller
 
             $user->tokens()->delete();
     
-            $token=$user->createToken('Laravel Password Grant Client')->plainTextToken;
-    
-            return response()->json(['user'=>$user,'token'=>$token],200);
+            $token=$user->createToken('token: '.$data['email'])->plainTextToken;
+
+            return new ArrayResource([
+                'user'=>$user,
+                'token'=>$token
+            ]);
+
 
         }else{
 
-            return response()->json(['message'=>'El email o el password son incorrectos'],401);
+            return new ErrorResource(   
+                    [
+                        'code'=>401,
+                        'message'=>'El email o el password son incorrectos'
+                    ]);
+
         }
 
     }
@@ -93,11 +141,33 @@ class UsuariosController extends Controller
     public function SumarCreditos(Request $request)
     {
         
-        
-        CreditosTrait::SumarCreditos($request->id, $request->creditos);
+        $rules=[
+            'creditos' => 'required|numeric',
+        ];
+
+        $messages=[
+
+            'creditos.required'=>'creditos es requerido'
+        ];
+
+        $data=$request->all();
+
+        $validator = Validator::make($data, $rules,$messages);
+
+        if ($validator->fails()) {
+
+            return new ErrorResource(
+                 [
+                     'code'=>422, 
+                     'validacion'=>$validator->errors() 
+                 ]);
+
+        }
+
+        CreditosTrait::SumarCreditos($request->user(), $request->creditos);
 
         return new ArrayResource(['message'=>'Creditos sumados correctamente']);
-
+        
     }
 
 

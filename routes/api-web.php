@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\ApiKeyController;
 
-
-
 //registrar usuario
 Route::post('registrar_usuario', [UsuariosController::class,'RegistrarUsuario'])->name('Registrar Usuario');
 
@@ -18,3 +16,6 @@ Route::post('autenticar_usuario', [UsuariosController::class,'AutenticarUsuario'
 
 //solicitar api key se requiere token de usuario para consumirlo
 Route::post('crear_apikey', [ApiKeyController::class,'GenerarApiKey'])->name('Crear ApiKey')->middleware('auth:sanctum');
+
+//sumar creditos
+Route::post('sumar_creditos',[UsuariosController::class,'SumarCreditos'])->name('Sumar Creditos')->middleware('auth:sanctum');
