@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CodigosPostalesController;
 use App\Http\Controllers\EstadosController;
 use App\Http\Controllers\UsuariosController;
-use App\Http\Controllers\ApiKeyController;
-
 
 Route::middleware(['api_key'])->group(function () {
 
