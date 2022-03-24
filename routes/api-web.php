@@ -23,4 +23,8 @@ Route::post('crear_apikey', [ApiKeyController::class,'GenerarApiKey'])->name('Cr
 //sumar creditos
 Route::post('sumar_creditos',[UsuariosController::class,'SumarCreditos'])->name('Sumar Creditos');
 
+//sumar creditos
+Route::post('revisar_creditos',[UsuariosController::class,'CreditosUsuario'])->name('Revisar Creditos');
+
+
 });

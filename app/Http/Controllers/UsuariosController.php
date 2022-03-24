@@ -12,6 +12,8 @@ use App\Models\Configuraciones;
 use App\Http\Resources\ArrayResource;
 use App\Http\Resources\ErrorResource;
 
+use Illuminate\Support\Arr;
+
 
 use App\Traits\CreditosTrait;
 use Illuminate\Support\Facades\Auth;
@@ -129,12 +131,11 @@ class UsuariosController extends Controller
     public function CreditosUsuario(Request $request)
     {
         //localizamos al usuario y regresamos la cantidad de creditos que tiene
-        $user = User::find($request->id);
-
-        $creditos = ['creditos' => $user->creditos];
+        $user = json_decode(User::find($request->user()));
+        
+        $creditos = ['creditos' => $user[0]->creditos];
 
         return new ArrayResource($creditos);
-        
     }
 
 
