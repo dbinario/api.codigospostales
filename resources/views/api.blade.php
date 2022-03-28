@@ -40,7 +40,7 @@
     <div class="content-menu">
         <div class="content-infos">
             <div class="info"><b>Version:</b> 1.0.0</div>
-            <div class="info"><b>Ultima Actualizacion:</b> 08/02/2022</div>
+            <div class="info"><b>Ultima Actualizacion:</b> 28/03/2022</div>
         </div>
         <ul>
             <li class="scroll-to-link active" data-target="content-get-bienvenidos">
@@ -54,6 +54,12 @@
             </li>
             <li class="scroll-to-link" data-target="content-get-estados">
                 <a>Obtener Estados</a>
+            </li>
+            <li class="scroll-to-link" data-target="content-get-cp-municipio">
+                <a>Codigos Postales Municipio</a>
+            </li>
+            <li class="scroll-to-link" data-target="content-get-colonia-cp">
+                <a>Colonia Codigo Postal</a>
             </li>
             <li class="scroll-to-link" data-target="content-errors">
                 <a>Errores</a>
@@ -69,7 +75,10 @@
        @include('api.buscar-codigo-postal')
        @include('api.coincidencia-codigo-postal')
        @include('api.estados')
+       @include('api.codigos-postales-municipio')
+       @include('api.cp-colonia')
        @include('api.errores')
+
     </div>
     <div class="content-code"></div>
 </div>
