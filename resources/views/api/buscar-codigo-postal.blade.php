@@ -9,7 +9,7 @@ curl \
                 </code></pre>
             <p>
                 Para buscar un codigo postal se necesita hacer una llamada POST a la siguiente url :<br>
-                <code class="higlighted break-word">http://api.codigospostales.test/v1/codigo_postal</code>
+                <code class="higlighted break-word">{{env('APP_URL')}}/v1/codigo_postal</code>
             </p>
             <br>
             <pre>

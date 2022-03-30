@@ -9,7 +9,7 @@ curl \
                 </code></pre>
             <p>
                 Para buscar una coincidencia con codigo postal enviar una peitcion POST a la siguiente URL :<br>
-                <code class="higlighted break-word">http://api.codigospostales.test/v1/buscar_cp</code>
+                <code class="higlighted break-word">{{env('APP_URL')}}/v1/buscar_cp</code>
             </p>
             <br>
             <pre>

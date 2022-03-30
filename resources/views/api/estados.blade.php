@@ -8,7 +8,7 @@ curl \
                 </code></pre>
             <p>
                 Para obtener los estados se debe enviar una peticion POST a la siguiente liga :<br>
-                <code class="higlighted break-word">http://api.codigospostales.test/v1/estados</code>
+                <code class="higlighted break-word">{{env('APP_URL')}}/v1/estados</code>
             </p>
             <br>
             <pre><code class="json">

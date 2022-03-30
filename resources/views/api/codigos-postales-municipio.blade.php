@@ -10,7 +10,7 @@ curl \
                 </code></pre>
             <p>
                 Para obtener los cp de un estado y un municipio mandar la siguiente peticion :<br>
-                <code class="higlighted break-word">http://api.codigospostales.test/v1/cp_municipio</code>
+                <code class="higlighted break-word">{{env('APP_URL')}}/v1/cp_municipio</code>
             </p>
             <br>
             <pre><code class="json">
