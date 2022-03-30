@@ -3,7 +3,8 @@
             <pre>
     API Endpoint
 
-    http://api.codigospostales.test/v1
+    {{env('APP_URL')}}/v1
+    
                 </pre>
             <p>
                 La API es una herramienta para poder obtener informacion de los codigos postales de México actualizados.

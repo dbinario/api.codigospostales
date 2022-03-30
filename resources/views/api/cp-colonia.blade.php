@@ -3,7 +3,7 @@
             <pre><code class="bash">
 # un ejemplo de como usar la API en curl
 curl \
--X POST http://api.codigospostales.test/v1/cp_colonia \
+-X POST {{env('APP_URL')}}/v1/cp_colonia \
 -F 'api_key=tu_api_key' \
 -F 'codigo_postal=11300' \
                 </code></pre>
